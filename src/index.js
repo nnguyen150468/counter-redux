@@ -4,40 +4,41 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {Provider} from 'react-redux'
-import {createStore} from 'redux'
+import {createStore, bindActionCreators} from 'redux'
 
 const initialState = {
   countNum: 0,
   color: "#FFA5A5",
-  boxColors: [null],
-  newColor: ''
+  boxColors: [null]
 }
 
 const countReducer = (state=initialState, action) => {
   switch(action.type){
     case 'INCREASE':
-      state.countNum = state.countNum + action.payload.num;
-      break;
+      return {...state,
+      countNum: state.countNum + action.payload.num}
     case 'DECREASE':
-      state.countNum = state.countNum - action.payload.num;
-      break;
+      return {...state,
+      countNum: state.countNum - action.payload.num}
     case 'RESET':
-      state.countNum = 0;
-      state.color = "#FFA5A5";
-      break;
+      return {...state,
+      countNum: 0, color: "#FFA5A5" }
     case 'CHANGE_COLOR':
-      state.color = action.payload.color;
-      break;
+      return {...state,
+      color: action.payload.color}
     case 'CHANGE_SINGLE_COLOR':
       const boxColors = state.boxColors;
-      boxColors[action.payload.index] = action.payload.newColor;
       console.log('boxColors:',boxColors)
-      state.boxColors= boxColors
+      boxColors[action.payload.index] = action.payload.singleColor;
+      return {...state,
+      boxColors: boxColors}
+    default:
+      return state;
   };
-  return state
 }
 
-const store = createStore(countReducer)
+const store = createStore(countReducer,   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+)
 
 ReactDOM.render(
   <Provider store={store}>

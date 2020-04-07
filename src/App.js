@@ -18,12 +18,14 @@ function App() {
   let renderBox = () => {
     let boxArray = [];
     for(let i=0;i<countNum;i++){
+      let boxColor= boxColors[i] || color;
       boxArray.push(
         <div key={i} className="mb-2" style={{width: "200px", 
         height:"100px", border: "1px solid", textAlign:"center",
-         backgroundColor: boxColors[i]? boxColors[i]: color}}>
-        <h2 className="form-label">Colorfull Box</h2>
-        <input onChange={(e,i)=>{singleBoxChange(e, i)}}
+         backgroundColor: boxColor}}>
+        <h2 className="form-label">Colorful Box</h2>
+        <input onChange={(e)=>dispatch({type: "CHANGE_SINGLE_COLOR",
+        payload: {singleColor: e.target.value, index:i}})}
         className="form-control col-8 mx-auto" type="input"/>
     </div>);
     };
@@ -45,12 +47,6 @@ function App() {
   let colorChange = (newcolor) => {
     console.log(newcolor)
     dispatch({type: "CHANGE_COLOR", payload: {color: newcolor}})
-  }
-
-  let singleBoxChange = (newcolor, index) => {
-    let newColor = newcolor.target.value;
-    console.log(newColor);
-    dispatch({type: "CHANGE_SINGLE_COLOR", payload: {newColor: newColor, index: index}})
   }
   
   return (
